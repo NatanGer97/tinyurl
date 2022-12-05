@@ -23,7 +23,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         Logger logger = LoggerFactory.getLogger(CustomAuthorizationFilter.class);
 
-        if (httpServletRequest.getServletPath().equals("/api/login")) {
+        if (httpServletRequest.getServletPath().equals("/api/login") || httpServletRequest.getServletPath().equals("/api/auth/login")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             String authorizationHeader = httpServletRequest.getHeader("Authorization");

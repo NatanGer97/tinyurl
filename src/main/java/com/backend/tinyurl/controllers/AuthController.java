@@ -2,10 +2,12 @@ package com.backend.tinyurl.controllers;
 
 import com.auth0.jwt.*;
 import com.auth0.jwt.algorithms.*;
+import com.backend.tinyurl.Exception.*;
 import com.backend.tinyurl.Modles.*;
 import com.backend.tinyurl.Services.*;
 import com.backend.tinyurl.repos.*;
 import lombok.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.security.authentication.*;
@@ -17,6 +19,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -31,14 +35,14 @@ public class AuthController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
         userService.saveUser(user);
         return ResponseEntity.ok().body(user);
 
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq loginReq) {
         auth(loginReq.getUsername(), loginReq.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginReq.getUsername());
@@ -66,7 +70,8 @@ public class AuthController {
         } catch (DisabledException e) {
             throw new RuntimeException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new RuntimeException("INVALID_CREDENTIALS", e);
+            logger.info("Bad Credentials");
+            throw new InvalidCredentialsException();
         }
     }
 }
