@@ -13,10 +13,16 @@ import java.util.TimeZone;
 public class Dates {
     public static SimpleDateFormat shortDate = new SimpleDateFormat("YYYY-MM-dd");
     public static TimeZone TIME_ZONE = TimeZone.getTimeZone("Asia/Jerusalem");
+    public static SimpleDateFormat monthFormatter = new SimpleDateFormat("yyyy/MM");
+
 
     public Dates() {
     }
+    public static String getCurMonth() {
+        Date date = new Date();
 
+        return monthFormatter.format(date);
+    }
     public static String dateToStr(@Nullable LocalDate date) {
         return date == null ? null : shortDate.format(date);
     }

@@ -39,6 +39,19 @@ public class RedisService {
         redisTemplate.delete(key);
     }
 
+    /**
+     * check if key exists in redis or not
+     * @param key
+     * @return
+     */
+    public boolean isKeyExist(String key){
+        Boolean isExist = redisTemplate.hasKey(key);
+
+        if (isExist != null && isExist) {
+            return true;
+        }
+        return false;
+    }
 
 
     public Object get(String key) {

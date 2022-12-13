@@ -24,6 +24,7 @@ public class UserService implements IUserService, UserDetailsService {
     public AppUser saveUser(AppUser appUser) {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         return userRepository.save(appUser);
+
     }
 
     @Override

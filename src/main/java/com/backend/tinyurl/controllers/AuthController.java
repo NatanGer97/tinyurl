@@ -53,6 +53,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq loginReq) {
         auth(loginReq.getUsername(), loginReq.getPassword());
+
         final UserDetails userDetails = userService.loadUserByUsername(loginReq.getUsername());
 
 

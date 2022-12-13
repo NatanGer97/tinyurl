@@ -5,6 +5,7 @@ import jdk.jfr.*;
 import lombok.*;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
@@ -37,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/tinyurl/**").permitAll();
         http.authorizeRequests().antMatchers("/api/users/**").permitAll();
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
