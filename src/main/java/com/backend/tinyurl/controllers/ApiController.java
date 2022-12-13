@@ -16,6 +16,11 @@ public class ApiController {
     @Autowired
     RedisService redisService;
 
+    @GetMapping("")
+    public String test(){
+        return "Hello World";
+    }
+
     @PostMapping("set-key")
     public ResponseEntity<String> setKey(@RequestParam String key, @RequestParam String value)
     {
@@ -41,7 +46,7 @@ public class ApiController {
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("get-value")
+    @GetMapping("get-value")
     public ResponseEntity<String> getValue(@RequestParam String key)
     {
         Object value = redisService.get(key);

@@ -38,7 +38,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public List<AppUser> getUsers() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override

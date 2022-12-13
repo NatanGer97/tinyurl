@@ -6,6 +6,7 @@ import com.backend.tinyurl.Exception.*;
 import com.backend.tinyurl.Modles.*;
 import com.backend.tinyurl.Services.*;
 import com.backend.tinyurl.repos.*;
+import com.backend.tinyurl.utils.*;
 import lombok.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
@@ -36,9 +37,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        userService.saveUser(user);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<AppUser> saveUser(@RequestBody UserIn user) {
+        AppUser newUser = AppUser.AppUserBuilder.anAppUser()
+                .withUsername(user.getUsername())
+                .withPassword(user.getPassword())
+                .withActiveUser(false)
+                .withCreatedAt(Dates.nowUTC())
+                .withName(user.getName()).build();
+
+
+        return ResponseEntity.ok().body(userService.saveUser(newUser));
 
     }
 
