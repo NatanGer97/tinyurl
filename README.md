@@ -1,6 +1,6 @@
 # Tinyurl
 Tinyurl is an url shortener written in Java using Spring Boot and **MongoDB**,
-**Redis** and **cassandra** which supports scaling and high availability.
+**Redis** and **cassandra** which supports high availability 
 
 ## Technologies
 * **Backend**: Spring-boot (java)
