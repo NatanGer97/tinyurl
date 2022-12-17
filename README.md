@@ -11,10 +11,10 @@ Tinyurl is an url shortener written in Java using Spring Boot and **MongoDB**,
 * **Containerization**: Docker
 * **Security**: JWT - spring security
 
-#Features
-* **short url** - user can create short url for any url
-* **url statistics** - user can see statistics about his urls (total amount of clicks, total amount of clicks per url, etc) via mongodb
-* **url activity** - user can see activity about his urls (when, which url, who visited etc.) via cassandra
+# Features
+* **Short url** - user can create short url for any url
+* **Url statistics** - user can see statistics about his urls (total amount of clicks, total amount of clicks per url, etc) via mongodb
+* **Url activity** - user can see activity about his urls (when, which url, who visited etc.) via cassandra
 * **User registration** - user can register with email and password
 * **User login** - user can log in with email and password
 
