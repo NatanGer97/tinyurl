@@ -83,6 +83,25 @@
             <artifactId>spring-boot-starter-data-cassandra</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.mailgun</groupId>
+            <artifactId>mailgun-java</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
+
+            <dependency>
+                <groupId>com.mailjet</groupId>
+                <artifactId>mailjet-client</artifactId>
+                <version>4.2.0</version>
+            </dependency>
+
+
     </dependencies>
 
     <build>

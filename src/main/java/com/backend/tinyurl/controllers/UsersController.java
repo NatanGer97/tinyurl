@@ -27,8 +27,9 @@ public class UsersController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @GetMapping("/user/{userName}/clicks")
+    @GetMapping("/{userName}/clicks")
     public ResponseEntity<?> getUserClicks(@PathVariable String userName) {
+        // TODO: 13/12/2022  check if user exists
         List<UserClickOut> collect = StreamUtils.createStreamFromIterator(iUserClickRepository.findByUserName(userName).iterator())
                 .map(userClick -> UserClickOut.of(userClick))
                 .collect(Collectors.toList());
@@ -36,6 +37,9 @@ public class UsersController {
         return new ResponseEntity<>(collect, HttpStatus.OK);
 
     }
+
+
+
 
 
 

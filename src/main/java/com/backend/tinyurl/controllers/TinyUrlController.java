@@ -33,7 +33,7 @@ public class TinyUrlController {
     private MongodbService mongodbService;
 
     @Autowired
-    private UserClickRepository iUserClickRepository;
+    private UserClickRepository userClickRepository;
 
     @Value("${base.url}")
     String baseUrl;
@@ -75,11 +75,12 @@ public class TinyUrlController {
         TinyUrlRequest tinyUrlRequest = objectMapper.readValue(tinyValueFromRedis.toString(), TinyUrlRequest.class);
         if (tinyUrlRequest.getOriginalUrl() != null) {
             String username = tinyUrlRequest.getUserName();
+            // todo: 01/12/2022  check if user exists
             if (username != null) {
                 mongodbService.incrementMongoField(username, "allUrlsClicks");
                 mongodbService.incrementMongoField(username, "shorts_" + tiny + "_clicks_" + Dates.getCurMonth());
 
-                iUserClickRepository.save(UserClick.UserClickBuilder.anUserClick()
+                userClickRepository.save(UserClick.UserClickBuilder.anUserClick()
                         .withUserClickKey(UserClickKey.UserClickKeyBuilder.anUserClickKey()
                                 .withUserName(username).withClickTime(new Date()).build())
                         .withTinyUrl(tiny).withOriginalUrl(tinyUrlRequest.getOriginalUrl()).build());

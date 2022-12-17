@@ -29,6 +29,18 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private TinyUrlService tinyUrlService;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private AuthService authService;
+
 
 
     @GetMapping("/users")
@@ -44,11 +56,33 @@ public class AuthController {
                 .withActiveUser(false)
                 .withCreatedAt(Dates.nowUTC())
                 .withName(user.getName()).build();
+        String registerConfirmationCode = tinyUrlService.generateCode();
+
+
+        authService.setKeyWithExpiry(newUser.getUsername(), registerConfirmationCode, 60 * 2);
+
+        new Thread(() -> emailService.sendSimpleMessage(user.getUsername(), registerConfirmationCode)).start();
 
 
         return ResponseEntity.ok().body(userService.saveUser(newUser));
-
     }
+
+    @PostMapping("/activate/{userId}")
+    public ResponseEntity<?> activateUser(@RequestBody ActivationRequest activationRequest, @PathVariable String userId) {
+        String code = authService.getValue(activationRequest.getUserName());
+        if (code == null) {
+            throw new RuntimeException("User not found");
+        }
+        if (code.equals(activationRequest.getActivationCode())) {
+            AppUser appUser = userService.getUser(userId);
+            appUser.setActiveUser(true);
+            userService.saveUser(appUser);
+            return ResponseEntity.ok().body("User activated");
+        }
+        return ResponseEntity.badRequest().body("Invalid code");
+    }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq loginReq) {
@@ -83,4 +117,6 @@ public class AuthController {
             throw new InvalidCredentialsException();
         }
     }
+
+
 }
