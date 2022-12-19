@@ -19,6 +19,12 @@ public class ExceptionAdvice {
     {
         return invalidCredentialsException.getMessage();
     }
-
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public String InvalidCredentialsException(UserNotFoundException notFoundException)
+    {
+        return notFoundException.getMessage();
+    }
 
 }

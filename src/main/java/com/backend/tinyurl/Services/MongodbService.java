@@ -17,11 +17,12 @@ public class MongodbService {
     private MongoTemplate mongoTemplate;
 
     public void incrementMongoField(String userName, String key) {
-        Query query = Query.query(Criteria.where("name").is(userName));
+        Query query = Query.query(Criteria.where("username").is(userName));
+//        Query query = Query.query(Criteria.where("name").is(userName));
         Update update = new Update().inc(key, 1);
         mongoTemplate.updateFirst(query, update, "users");
-
     }
+
 
 
 

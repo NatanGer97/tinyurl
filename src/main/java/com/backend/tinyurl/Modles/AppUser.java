@@ -22,6 +22,7 @@ public class AppUser {
     @Id
     private String id;
     @Length(min = 3, max = 60)
+
     private String name;
 
     @Email

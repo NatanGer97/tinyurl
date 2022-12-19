@@ -43,6 +43,11 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    public Optional<AppUser> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser appUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

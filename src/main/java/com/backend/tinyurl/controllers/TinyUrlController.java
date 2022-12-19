@@ -1,5 +1,6 @@
 package com.backend.tinyurl.controllers;
 
+import com.backend.tinyurl.Exception.*;
 import com.backend.tinyurl.Modles.Casandra.*;
 import com.backend.tinyurl.Modles.TinyUrl.*;
 import com.backend.tinyurl.Services.*;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
 
@@ -35,6 +37,9 @@ public class TinyUrlController {
     @Autowired
     private UserClickRepository userClickRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${base.url}")
     String baseUrl;
 
@@ -49,6 +54,10 @@ public class TinyUrlController {
     public String createTinyUrl(@RequestBody TinyUrlRequest tinyUrlRequest) throws JsonProcessingException {
         String tinyCode = tinyUrlService.generateCode();
         int currentRetries = 0;
+        String username = tinyUrlRequest.getUserName();
+        userService.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
+
 
         if (!tinyUrlRequest.getOriginalUrl().startsWith("https://") || !tinyUrlRequest.getOriginalUrl().startsWith("http://")) {
             tinyUrlRequest.setOriginalUrl("http://" + tinyUrlRequest.getOriginalUrl());
@@ -76,6 +85,7 @@ public class TinyUrlController {
         if (tinyUrlRequest.getOriginalUrl() != null) {
             String username = tinyUrlRequest.getUserName();
             // todo: 01/12/2022  check if user exists
+
             if (username != null) {
                 mongodbService.incrementMongoField(username, "allUrlsClicks");
                 mongodbService.incrementMongoField(username, "shorts_" + tiny + "_clicks_" + Dates.getCurMonth());

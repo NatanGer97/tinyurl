@@ -13,4 +13,5 @@ public interface IUserService {
     AppUser getUser(String userId);
 
     List<AppUser> getUsers();
+    Optional<AppUser> findByUsername(String username);
 }
