@@ -42,7 +42,18 @@ start docker-compose
 CREATE KEYSPACE tiny_keyspace
 WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 1};
 ```
-
+**Note: For retrieving the jwt token you need to register and login first**
+* The login endpoint is: http://localhost:8080/api/login
+* use postman to send a post request with the following body in x-www-form-urlencoded format:
+  `{
+  "username": the email you registered with
+  "password": the password you registered with
+  }`
+* You can use the following command to get the token with pre-defined (test) user:
+  `curl -X POST \
+  http://localhost:8080/api/login \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'username=test@gmail.com&password=test'`
 note:
     The project is still under development, so some features may be added, 
     or some modifications may be made such as exceptions handling and etc.
