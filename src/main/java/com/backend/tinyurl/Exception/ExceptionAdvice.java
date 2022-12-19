@@ -27,4 +27,12 @@ public class ExceptionAdvice {
         return notFoundException.getMessage();
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UserConflictException.class)
+    public String InvalidCredentialsException(UserConflictException notFoundException)
+    {
+        return notFoundException.getMessage();
+    }
+
 }

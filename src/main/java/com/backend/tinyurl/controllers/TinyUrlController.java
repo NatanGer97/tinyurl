@@ -1,6 +1,7 @@
 package com.backend.tinyurl.controllers;
 
 import com.backend.tinyurl.Exception.*;
+import com.backend.tinyurl.Modles.*;
 import com.backend.tinyurl.Modles.Casandra.*;
 import com.backend.tinyurl.Modles.TinyUrl.*;
 import com.backend.tinyurl.Services.*;
@@ -11,8 +12,10 @@ import com.fasterxml.jackson.databind.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.*;
+import org.springframework.web.servlet.view.*;
 
 import java.util.*;
 
@@ -81,6 +84,7 @@ public class TinyUrlController {
         logger.info("get req for url: " + tiny);
 
         Object tinyValueFromRedis = redisService.get(tiny);
+
         TinyUrlRequest tinyUrlRequest = objectMapper.readValue(tinyValueFromRedis.toString(), TinyUrlRequest.class);
         if (tinyUrlRequest.getOriginalUrl() != null) {
             String username = tinyUrlRequest.getUserName();

@@ -50,6 +50,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AppUser> saveUser(@RequestBody UserIn user) {
+        String username = user.getUsername();
+        userService.findByUsername(username).ifPresent(u -> {
+            throw new UserConflictException("User already exists with username: " + username);
+        });
         AppUser newUser = AppUser.AppUserBuilder.anAppUser()
                 .withUsername(user.getUsername())
                 .withPassword(user.getPassword())
@@ -61,7 +65,7 @@ public class AuthController {
 
         authService.setKeyWithExpiry(newUser.getUsername(), registerConfirmationCode, 60 * 2);
 
-        new Thread(() -> emailService.sendSimpleMessage(user.getUsername(), registerConfirmationCode)).start();
+//        new Thread(() -> emailService.sendSimpleMessage(user.getUsername(), registerConfirmationCode)).start();
 
 
         return ResponseEntity.ok().body(userService.saveUser(newUser));
